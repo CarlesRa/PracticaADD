@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="18133578-c0d4-4353-8181-24b7f3a19557" name="Default Changelist" comment="" />
+    <list default="true" id="18133578-c0d4-4353-8181-24b7f3a19557" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/principal/InsertarClientes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/principal/InsertarProductos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/principal/InsertarVentas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/principal/VentanaPrincipal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/principal/VentanaScrollable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/principal/VentanaMain$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/principal/VentanaMain$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/principal/VentanaMain$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/principal/VentanaMain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/empresa.db" beforeDir="false" afterPath="$PROJECT_DIR$/empresa.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/principal/VentanaMain.java" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1TCFFVOzzKept2Xecrtn0Zmjr5i" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.0" />
@@ -27,7 +48,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.VentanaPrincipal">
     <configuration name="Principal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="principal.Principal" />
       <module name="PracticaADD" />
@@ -41,8 +62,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VentanaPrincipal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="principal.VentanaPrincipal" />
+      <module name="PracticaADD" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="principal.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.VentanaPrincipal" />
         <item itemvalue="Application.Principal" />
       </list>
     </recent_temporary>
@@ -59,5 +94,21 @@
       <updated>1572956066216</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
