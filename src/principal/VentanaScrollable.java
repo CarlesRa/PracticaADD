@@ -39,8 +39,15 @@ public class VentanaScrollable extends JFrame {
 	private JPanel contentPane;
 	private JTextField tfRow;
 	private JTable table;
+	private JScrollPane scrollPane = new JScrollPane();
+	private JLabel lblId = new JLabel("ID");
+	private JLabel lblNombre = new JLabel("Descripción");
+	private JLabel lblPvp = new JLabel("PVP");
+	private JButton btFirst = new JButton("<<");
+	private JLabel lblFoto = new JLabel("");
+	private JButton btPrevius = new JButton("<");
 	private ResultSet result;
-
+	private int contador;
 	/**
 	 * Launch the application.
 	 */
@@ -57,23 +64,56 @@ public class VentanaScrollable extends JFrame {
 		});
 	}
 	
-	public static ResultSet getResultSet(String consulta) {
-		
-		 String userName = "root";
-		 String contraseña = "";
-		 String urlConexion = "jdbc:mysql://localhost:3306/empresa?serverTimeZone=UTC";
-		 Connection cn;
-		 ResultSet rs = null;
-		try {
-			cn = DriverManager.getConnection(urlConexion,userName, contraseña);
-			Statement st = cn.createStatement();
-			rs = st.executeQuery(consulta);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	//*****METODOS DEFINIDOS POR MI******
+		/**
+		 * Generea una conexion a la base de datos y rellena el ResultSet segun la consulta
+		 * @param consulta: Sentencia SQL
+		 * @return un ResultSet
+		 */
+		public ResultSet getResultSet(String sql) {
+			 String userName = "root";
+			 String contraseña = "";
+			 String urlConexion = "jdbc:mysql://localhost:3306/empresa?serverTimeZone=UTC";
+			 Connection cn;
+			 ResultSet rs = null;
+			try {
+				cn = DriverManager.getConnection(urlConexion,userName, contraseña);
+				Statement st = cn.createStatement();
+				rs = st.executeQuery(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return rs;
 		}
-		 return rs;
-	}
+		
+		/**
+		 * METODO QUE RELLENA LOS CAMPOS DE LA VENTANA
+		 * @param result le pasamos un ResultSet
+		 */
+		public void rellenarCampos(ResultSet result) {
+			
+			try {
+				
+				lblId.setText(result.getString("id"));
+				if (result.getBinaryStream("foto") != null) {
+					BufferedImage im = ImageIO.read(result.getBinaryStream("foto"));
+					Image imagen = im.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
+					lblFoto.setIcon(new ImageIcon(imagen));
+				}
+				lblNombre.setText(result.getString("descripcion"));
+				lblPvp.setText(result.getString("pvp"));
+				tfRow.setText(result.getString("id"));
+			
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+		
 
 	/**
 	 * Create the frame.
@@ -86,137 +126,114 @@ public class VentanaScrollable extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		
-		JLabel lblId = new JLabel("ID");
-		
-		JLabel lblNombre = new JLabel("Descripción");
-		
-		JLabel lblPvp = new JLabel("PVP");
-		
-		JButton btFirst = new JButton("<<");
-		
-		JLabel lblFoto = new JLabel("");
-
-		btFirst.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					result.first();
-					lblId.setText(result.getString("id"));
-					if (result.getBinaryStream("foto") != null) {
-						BufferedImage im = ImageIO.read(result.getBinaryStream("foto"));
-						Image imagen = im.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
-						lblFoto.setIcon(new ImageIcon(imagen));
-					}
-					lblNombre.setText(result.getString("descripcion"));
-					lblPvp.setText(result.getString("pvp"));
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		JButton btPrevius = new JButton("<");
+		scrollPane = new JScrollPane();
+		lblId = new JLabel("ID");
+		lblNombre = new JLabel("Descripción");
+		lblPvp = new JLabel("PVP");
+		btFirst = new JButton("<<");
+		lblFoto = new JLabel("");
+		btPrevius = new JButton("<");
 		table = new JTable();
+		tfRow = new JTextField();
+		tfRow.setColumns(10);
 		scrollPane.setViewportView(table);
+		Border border = LineBorder.createGrayLineBorder();
+		lblFoto.setBorder(border);
 		
+		//CREO EL MODELO DEL JTABLE
 		String[] campos = {"ID","Descripción","PVP"};
 		DefaultTableModel modelo = new DefaultTableModel();
 		modelo.setColumnIdentifiers(campos);
 		table.setModel(modelo);
 		
+		//PREPARAMOS EL RESULTSET CON LA CONSULTA DE TODOS LOS PRODUCTOS
 		result = getResultSet("select * from productos");
+		
+		//RELLENAMOS EL JTABLE CON TODOS LOS DATOS AL INICIO
 		try {
 			while (result.next()) {
 				String[] datos = {result.getString("id"),result.getString("descripcion"),result.getString("pvp")};
 				modelo.addRow(datos);
+				contador ++;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+			
 		
+
+		/**
+		 * BOTON FIRST nos lleva al primer registro
+		 */
+		btFirst.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+					try {
+						result.first();
+					} catch (SQLException e) {
+						
+						e.printStackTrace();
+					}
+					table.setRowSelectionInterval(0, 0);
+					rellenarCampos(result);
+			}
+		});
+		
+		/**
+		 * BOTON PREVIUS nos lleva al registro anterior	
+		 */
 		btPrevius.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					if (!result.isFirst()) {
 						result.previous();
-						if (result.getBinaryStream("foto") != null) {
-							BufferedImage im = ImageIO.read(result.getBinaryStream("foto"));
-							Image imagen = im.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
-							lblFoto.setIcon(new ImageIcon(imagen));
-						}
-						lblNombre.setText(result.getString("descripcion"));
-						lblPvp.setText(result.getString("pvp"));
-						
+						table.setRowSelectionInterval(table.getSelectedRow() - 1, table.getSelectedRow() - 1);
+						rellenarCampos(result);
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} 
 				
 			}
 		});
 		
+		/**
+		 * BOTON NEXT nos lleva al registro siguiente
+		 */
 		JButton btNext = new JButton(">");
 		btNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				try {
 					if (!result.isLast()) {
 						result.next();
-						if (result.getBinaryStream("foto") != null) {
-							BufferedImage im = ImageIO.read(result.getBinaryStream("foto"));
-							Image imagen = im.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
-							lblFoto.setIcon(new ImageIcon(imagen));
-						}
-						lblNombre.setText(result.getString("descripcion"));
-						lblPvp.setText(result.getString("pvp"));
-						
+						table.setRowSelectionInterval(table.getSelectedRow() + 1, table.getSelectedRow() + 1);
+						rellenarCampos(result);
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} 
 			}
 		});
 		
+		/**
+		 * BOTON LAST nos lleva a la ultima posicion del registro 
+		 */
 		JButton btLast = new JButton(">>");
 		btLast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					result.last();
-					lblId.setText(result.getString("id"));
-					BufferedImage im = ImageIO.read(result.getBinaryStream("foto"));
-					Image imagen = im.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH);
-					lblFoto.setIcon(new ImageIcon(imagen));
-					lblNombre.setText(result.getString("descripcion"));
-					lblPvp.setText(result.getString("pvp"));
+					table.setRowSelectionInterval(contador-1,contador-1);
+					rellenarCampos(result);
 					
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} 
 			}
-		});
+		});	
 		
-		tfRow = new JTextField();
-		tfRow.setColumns(10);
-		Border border = LineBorder.createGrayLineBorder();
+		
+		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -269,6 +286,6 @@ public class VentanaScrollable extends JFrame {
 								.addComponent(btLast, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))))
 					.addGap(22))
 		);	
-		contentPane.setLayout(gl_contentPane);
+		contentPane.setLayout(gl_contentPane);	
 	}
 }
