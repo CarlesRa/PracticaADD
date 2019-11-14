@@ -105,11 +105,8 @@ public class VentanaScrollable extends JFrame {
 				tfRow.setText(result.getString("id"));
 			
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 		}
 		
@@ -146,7 +143,10 @@ public class VentanaScrollable extends JFrame {
 		modelo.setColumnIdentifiers(campos);
 		table.setModel(modelo);
 		
-		//PREPARAMOS EL RESULTSET CON LA CONSULTA DE TODOS LOS PRODUCTOS
+		/*
+		 * PREPARAMOS EL RESULTSET CON LA CONSULTA DE TODOS LOS PRODUCTOS
+		 * UTILIZANDO EL METODO QUE HE CREADO
+		 */
 		result = getResultSet("select * from productos");
 		
 		//RELLENAMOS EL JTABLE CON TODOS LOS DATOS AL INICIO
@@ -157,10 +157,8 @@ public class VentanaScrollable extends JFrame {
 				contador ++;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-			
-		
+
+		}		
 
 		/**
 		 * BOTON FIRST nos lleva al primer registro
@@ -171,8 +169,7 @@ public class VentanaScrollable extends JFrame {
 					try {
 						result.first();
 					} catch (SQLException e) {
-						
-						e.printStackTrace();
+
 					}
 					table.setRowSelectionInterval(0, 0);
 					rellenarCampos(result);
@@ -191,7 +188,7 @@ public class VentanaScrollable extends JFrame {
 						rellenarCampos(result);
 					}
 				} catch (SQLException e) {
-					e.printStackTrace();
+
 				} 
 				
 			}
@@ -210,7 +207,7 @@ public class VentanaScrollable extends JFrame {
 						rellenarCampos(result);
 					}
 				} catch (SQLException e) {
-					e.printStackTrace();
+
 				} 
 			}
 		});
@@ -227,7 +224,7 @@ public class VentanaScrollable extends JFrame {
 					rellenarCampos(result);
 					
 				} catch (SQLException e) {
-					e.printStackTrace();
+
 				} 
 			}
 		});	
